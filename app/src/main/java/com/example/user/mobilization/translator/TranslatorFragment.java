@@ -16,7 +16,6 @@ import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPresenter> implements TranslatorView {
 
     private View view;
-    ;
 
     @Override
     public TranslatorPresenter createPresenter() {
