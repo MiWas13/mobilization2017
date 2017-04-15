@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.example.user.mobilization.R;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
@@ -16,12 +18,19 @@ import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPresenter> implements TranslatorView {
 
     private View view;
+    private Button deleteTextBtn, recognizerBtn, vocalaizerBtn;
+    private EditText editText;
 
     @Override
     public TranslatorPresenter createPresenter() {
         return new TranslatorPresenter();
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstance) {
+        super.onViewCreated(view, savedInstance);
+        presenter.onViewCreated();
+    }
 
     @Nullable
     @Override
@@ -30,4 +39,34 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
         return view;
     }
 
+
+    @Override
+    public void initView() {
+        deleteTextBtn = (Button) view.findViewById(R.id.delete_button);
+        recognizerBtn = (Button) view.findViewById(R.id.recognizer_button);
+        vocalaizerBtn = (Button) view.findViewById(R.id.vocalizer_button);
+        editText = (EditText) view.findViewById(R.id.edit_view);
+
+        deleteTextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.onDeleteButtonClick();
+            }
+        });
+
+        recognizerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.onRecognizerButonClick();
+            }
+        });
+
+        vocalaizerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.onVocalaizerButtonClick();
+            }
+        });
+
+    }
 }
