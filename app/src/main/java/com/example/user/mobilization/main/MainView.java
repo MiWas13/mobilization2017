@@ -11,6 +11,5 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 interface MainView extends MvpView {
     void initView();
-
     void setSelectedFragment(Fragment fragment);
 }
