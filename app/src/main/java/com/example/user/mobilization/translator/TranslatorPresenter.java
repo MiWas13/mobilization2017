@@ -7,4 +7,23 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
  */
 
 class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
+
+    void onViewCreated() {
+        TranslatorView view = getView();
+        view.initView();
+    }
+
+    void onDeleteButtonClick() {
+
+    }
+
+    void onVocalizerButtonClick() {
+
+    }
+
+    void onRecognizerButtonClick() {
+
+    }
+
+
 }

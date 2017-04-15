@@ -7,4 +7,8 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
  */
 
 interface TranslatorView extends MvpView {
+    void initView();
+    void deleteText();
+    void startRecognizerWork();
+    void startVocalizerWork();
 }
