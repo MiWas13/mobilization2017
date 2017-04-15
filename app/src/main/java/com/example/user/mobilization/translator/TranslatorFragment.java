@@ -30,5 +30,4 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
         return view;
     }
 
-
 }
