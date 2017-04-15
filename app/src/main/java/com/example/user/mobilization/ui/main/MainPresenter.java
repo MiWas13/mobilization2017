@@ -1,4 +1,4 @@
-package com.example.user.mobilization.main;
+package com.example.user.mobilization.ui.main;
 
 
 import android.support.v4.app.Fragment;

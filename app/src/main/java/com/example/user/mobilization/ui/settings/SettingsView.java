@@ -1,4 +1,4 @@
-package com.example.user.mobilization.settings;
+package com.example.user.mobilization.ui.settings;
 
 /**
  * Created by User on 12.04.17.

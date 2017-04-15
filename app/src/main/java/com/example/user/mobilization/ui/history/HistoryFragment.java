@@ -1,4 +1,4 @@
-package com.example.user.mobilization.history;
+package com.example.user.mobilization.ui.history;
 
 /**
  * Created by User on 12.04.17.
