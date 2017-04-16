@@ -8,10 +8,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 
 import com.example.user.mobilization.R;
+import com.example.user.mobilization.translator.TranslatorFragment;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 
 public class MainActivity extends MvpActivity<MainView, MainPresenter> implements MainView {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.translator_button:
-//                                presenter.setFragment();
+                                presenter.setFragment(new TranslatorFragment());
                                 break;
                             case R.id.history_button:
 //                                presenter.setFragment();
