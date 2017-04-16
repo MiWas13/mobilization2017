@@ -18,7 +18,6 @@ import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPresenter> implements TranslatorView {
 
     private View view;
-    private Button deleteTextBtn, recognizerBtn, vocalaizerBtn;
     private EditText editText;
 
     @Override
@@ -42,9 +41,9 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
 
     @Override
     public void initView() {
-        deleteTextBtn = (Button) view.findViewById(R.id.delete_button);
-        recognizerBtn = (Button) view.findViewById(R.id.recognizer_button);
-        vocalaizerBtn = (Button) view.findViewById(R.id.vocalizer_button);
+        Button deleteTextBtn = (Button) view.findViewById(R.id.delete_button);
+        Button recognizerBtn = (Button) view.findViewById(R.id.recognizer_button);
+        Button vocalizerBtn = (Button) view.findViewById(R.id.vocalizer_button);
         editText = (EditText) view.findViewById(R.id.edit_view);
 
         deleteTextBtn.setOnClickListener(new View.OnClickListener() {
@@ -57,16 +56,31 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
         recognizerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.onRecognizerButonClick();
+                presenter.onRecognizerButtonClick();
             }
         });
 
-        vocalaizerBtn.setOnClickListener(new View.OnClickListener() {
+        vocalizerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.onVocalaizerButtonClick();
+                presenter.onVocalizerButtonClick();
             }
         });
+
+    }
+
+    @Override
+    public void deleteText() {
+        editText.setText(null);
+    }
+
+    @Override
+    public void startRecognizerWork() {
+
+    }
+
+    @Override
+    public void startVocalizerWork() {
 
     }
 }

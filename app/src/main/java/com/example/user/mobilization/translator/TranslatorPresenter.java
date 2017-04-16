@@ -17,11 +17,11 @@ class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
 
     }
 
-    void onVocalaizerButtonClick() {
+    void onVocalizerButtonClick() {
 
     }
 
-    void onRecognizerButonClick() {
+    void onRecognizerButtonClick() {
 
     }
 
