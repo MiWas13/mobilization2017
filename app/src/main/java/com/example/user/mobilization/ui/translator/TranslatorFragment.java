@@ -1,4 +1,4 @@
-package com.example.user.mobilization.translator;
+package com.example.user.mobilization.ui.translator;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

@@ -1,4 +1,4 @@
-package com.example.user.mobilization.translator;
+package com.example.user.mobilization.ui.translator;
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 

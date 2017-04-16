@@ -1,4 +1,4 @@
-package com.example.user.mobilization.main;
+package com.example.user.mobilization.ui.main;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 
 import com.example.user.mobilization.R;
-import com.example.user.mobilization.translator.TranslatorFragment;
+import com.example.user.mobilization.ui.translator.TranslatorFragment;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 
 public class MainActivity extends MvpActivity<MainView, MainPresenter> implements MainView {
