@@ -25,6 +25,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
                 android:layout_weight="0.5">
+
                 <EditText
                     android:id="@+id/edit_view"
                     android:layout_width="match_parent"
@@ -49,7 +50,7 @@
                     android:layout_marginBottom="20dp"
                     android:layout_marginRight="5dp"
                     android:layout_marginTop="5dp"
-                    android:background="@drawable/microphone"
+                    android:background="@drawable/ic_microphone_grey"
                     android:gravity="center" />
 
                 <Button
@@ -57,7 +58,7 @@
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_marginRight="5dp"
-                    android:background="@drawable/speaker"
+                    android:background="@drawable/ic_speaker_grey"
                     android:gravity="center" />
             </LinearLayout>
 
@@ -69,7 +70,7 @@
             android:layout_height="17dp"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/delete" />
+            android:background="@drawable/ic_cross_grey" />
     </LinearLayout>
 
     <LinearLayout
@@ -98,28 +99,28 @@
                 android:id="@+id/translated_vocalizer_button"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:background="@drawable/speaker" />
+                android:background="@drawable/ic_speaker_grey" />
 
             <Button
                 android:id="@+id/bookmark_button"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/bookmark" />
+                android:background="@drawable/ic_bookmark_grey" />
 
             <Button
                 android:id="@+id/share_button"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/upload" />
+                android:background="@drawable/ic_upload_grey" />
 
             <Button
                 android:id="@+id/expand_button"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/expand" />
+                android:background="@drawable/ic_expand_grey" />
         </LinearLayout>
     </LinearLayout>
 
