@@ -1,15 +1,16 @@
 package com.example.user.mobilization.ui.main;
 
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.view.MenuItem;
 
 import com.example.user.mobilization.R;
 import com.example.user.mobilization.ui.translator.TranslatorFragment;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnTabSelectListener;
 
 public class MainActivity extends MvpActivity<MainView, MainPresenter> implements MainView {
 
@@ -28,25 +29,24 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
 
     @Override
     public void initView() {
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.translator_button:
-                                presenter.setFragment(new TranslatorFragment());
-                                break;
-                            case R.id.history_button:
-//                                presenter.setFragment();
-                                break;
-                            case R.id.settings_button:
-//                                presenter.setFragment();
-                                break;
-                        }
-                        return true;
-                    }
-                });
+        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottom_navigation);
+        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelected(@IdRes int tabId) {
+                switch (tabId) {
+                    case R.id.translator_button:
+                        presenter.setFragment(new TranslatorFragment());
+                        break;
+                    case R.id.history_button:
+//                      presenter.setFragment();
+                        break;
+                    case R.id.settings_button:
+//                      presenter.setFragment();
+                        break;
+                }
+            }
+        });
+
     }
 
     @Override
