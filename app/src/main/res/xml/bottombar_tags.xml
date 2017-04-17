@@ -1,0 +1,14 @@
+<tabs>
+    <tab
+        icon="@drawable/ic_translator_black"
+        id="@+id/translator_button"
+        title="Translator" />
+    <tab
+        icon="@drawable/ic_bookmark_black"
+        id="@+id/history_button"
+        title="Bookmarks" />
+    <tab
+        icon="@drawable/ic_settings_black"
+        id="@+id/settings_button"
+        title="Settings" />
+</tabs>
