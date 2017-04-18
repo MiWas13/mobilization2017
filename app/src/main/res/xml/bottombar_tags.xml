@@ -5,7 +5,7 @@
         title="Translator" />
     <tab
         icon="@drawable/ic_bookmark_black"
-        id="@+id/history_button"
+        id="@+id/bookmarks_button"
         title="Bookmarks" />
     <tab
         icon="@drawable/ic_settings_black"
