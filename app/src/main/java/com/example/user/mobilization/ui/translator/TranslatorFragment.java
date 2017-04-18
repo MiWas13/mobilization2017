@@ -3,6 +3,7 @@ package com.example.user.mobilization.ui.translator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -46,26 +47,17 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
         Button vocalizerBtn = (Button) view.findViewById(R.id.vocalizer_button);
         editText = (EditText) view.findViewById(R.id.edit_view);
 
-        deleteTextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        deleteTextBtn.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
                 presenter.onDeleteButtonClick();
+                return true;
             }
+            return false;
         });
 
-        recognizerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.onRecognizerButtonClick();
-            }
-        });
+        recognizerBtn.setOnClickListener(v -> presenter.onRecognizerButtonClick());
 
-        vocalizerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.onVocalizerButtonClick();
-            }
-        });
+        vocalizerBtn.setOnClickListener(v -> presenter.onVocalizerButtonClick());
 
     }
 

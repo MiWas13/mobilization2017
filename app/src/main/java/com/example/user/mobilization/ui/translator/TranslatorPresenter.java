@@ -14,7 +14,8 @@ class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
     }
 
     void onDeleteButtonClick() {
-
+        TranslatorView view = getView();
+        view.deleteText();
     }
 
     void onVocalizerButtonClick() {
