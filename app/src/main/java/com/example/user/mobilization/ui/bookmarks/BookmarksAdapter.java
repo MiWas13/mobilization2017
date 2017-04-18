@@ -4,6 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.user.mobilization.R;
 import com.example.user.mobilization.model.BookmarkModel;
@@ -26,7 +28,14 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        if (data.get(position).isState()) {
+            holder.bookmarkView.setImageResource(R.drawable.ic_bookmark_yellow);
+        } else {
+            holder.bookmarkView.setImageResource(R.drawable.ic_bookmark_grey);
+        }
+        holder.firstLanguage.setText(data.get(position).getTranslated());
+        holder.secondLanguage.setText(data.get(position).getTranslation());
+        holder.languagesView.setText(data.get(position).getLanguages());
     }
 
     @Override
@@ -34,15 +43,17 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
         return data.size();
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return super.getItemViewType(position);
-    }
-
     static class ViewHolder extends RecyclerView.ViewHolder {
+
+        private ImageView bookmarkView;
+        private TextView firstLanguage, secondLanguage, languagesView;
 
         ViewHolder(View itemView) {
             super(itemView);
+            bookmarkView = (ImageView) itemView.findViewById(R.id.bookmark_view);
+            firstLanguage = (TextView) itemView.findViewById(R.id.first_language);
+            secondLanguage = (TextView) itemView.findViewById(R.id.second_language);
+            languagesView = (TextView) itemView.findViewById(R.id.languages);
         }
     }
 
