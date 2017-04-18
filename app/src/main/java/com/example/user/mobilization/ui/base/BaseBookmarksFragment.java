@@ -1,4 +1,4 @@
-package com.example.user.mobilization.ui.bookmarks;
+package com.example.user.mobilization.ui.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.user.mobilization.R;
+import com.example.user.mobilization.ui.bookmarks.BookmarksView;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 
 /**

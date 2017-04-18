@@ -6,6 +6,6 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
  * Created by User on 12.04.17.
  */
 
-interface BookmarksView extends MvpView {
+public interface BookmarksView extends MvpView {
     void initView();
 }
