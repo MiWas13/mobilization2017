@@ -58,6 +58,7 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
     }
 
     public void setData(ArrayList<BookmarkModel> data) {
+        this.data.clear();
         this.data = data;
     }
 

@@ -6,4 +6,5 @@ package com.example.user.mobilization.ui;
 public final class Extras {
     public static final String HISTORY_TAB_ID = "history";
     public static final String BOOKMARKS_TAB_ID = "bookmarks";
+    public static final String BUNDLE = "EXTRA_ARGUMENTS";
 }

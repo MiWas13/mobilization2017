@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TabHost;
 
 import com.example.user.mobilization.R;
 import com.example.user.mobilization.ui.base.BaseBookmarksFragment;
@@ -14,13 +13,14 @@ import com.example.user.mobilization.ui.base.BaseBookmarksPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 
 import static com.example.user.mobilization.ui.Extras.BOOKMARKS_TAB_ID;
+import static com.example.user.mobilization.ui.Extras.BUNDLE;
 import static com.example.user.mobilization.ui.Extras.HISTORY_TAB_ID;
 
 /**
  * Created by User on 12.04.17.
  */
 
-public class TabsFragment extends MvpFragment<BookmarksView, BaseBookmarksPresenter> implements BookmarksView {
+public class TabsFragment extends MvpFragment<BookmarksView, BaseBookmarksPresenter> {
 
     private View view;
 
@@ -32,7 +32,7 @@ public class TabsFragment extends MvpFragment<BookmarksView, BaseBookmarksPresen
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstance) {
         super.onViewCreated(view, savedInstance);
-        presenter.onViewCreated();
+        initView();
     }
 
     @Nullable
@@ -42,21 +42,21 @@ public class TabsFragment extends MvpFragment<BookmarksView, BaseBookmarksPresen
         return view;
     }
 
-    @Override
     public void initView() {
+        Bundle historyBundle = new Bundle();
+        historyBundle.putString(BUNDLE, HISTORY_TAB_ID);
+        Bundle bookmarksBundle = new Bundle();
+        bookmarksBundle.putString(BUNDLE, BOOKMARKS_TAB_ID);
         FragmentTabHost mTabHost = (FragmentTabHost) view.findViewById(android.R.id.tabhost);
         mTabHost.setup(getActivity(), getChildFragmentManager(), android.R.id.tabcontent);
 
         mTabHost.addTab(mTabHost.newTabSpec(HISTORY_TAB_ID).setIndicator("История"),
-                BaseBookmarksFragment.class, null);
+                BaseBookmarksFragment.class, historyBundle);
         mTabHost.addTab(mTabHost.newTabSpec(BOOKMARKS_TAB_ID).setIndicator("Избранное"),
-                BaseBookmarksFragment.class, null);
+                BaseBookmarksFragment.class, bookmarksBundle);
 
-        mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
-            @Override
-            public void onTabChanged(String tabId) {
-                presenter.onTabSelected(tabId);
-            }
-        });
+//        mTabHost.setOnTabChangedListener(tabId -> presenter.onTabSelected(tabId));
     }
+
+
 }
