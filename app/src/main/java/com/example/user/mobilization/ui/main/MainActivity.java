@@ -1,11 +1,13 @@
 package com.example.user.mobilization.ui.main;
 
 
+import android.content.Context;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.view.inputmethod.InputMethodManager;
 
 import com.example.user.mobilization.R;
 import com.example.user.mobilization.ui.bookmarks.TabsFragment;
@@ -32,20 +34,17 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
     @Override
     public void initView() {
         BottomBar bottomBar = (BottomBar) findViewById(R.id.bottom_navigation);
-        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
-            @Override
-            public void onTabSelected(@IdRes int tabId) {
-                switch (tabId) {
-                    case R.id.translator_button:
-                        presenter.setFragment(new TranslatorFragment());
-                        break;
-                    case R.id.bookmarks_button:
-                        presenter.setFragment(new TabsFragment());
-                        break;
-                    case R.id.settings_button:
+        bottomBar.setOnTabSelectListener(tabId -> {
+            switch (tabId) {
+                case R.id.translator_button:
+                    presenter.setFragment(new TranslatorFragment());
+                    break;
+                case R.id.bookmarks_button:
+                    presenter.setFragment(new TabsFragment());
+                    break;
+                case R.id.settings_button:
 //                      presenter.setFragment();
-                        break;
-                }
+                    break;
             }
         });
     }
