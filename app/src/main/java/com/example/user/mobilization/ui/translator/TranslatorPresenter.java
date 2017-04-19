@@ -8,6 +8,8 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
 
+    private String lastWord;
+
     void onViewCreated() {
         TranslatorView view = getView();
         view.initView();
@@ -19,12 +21,28 @@ class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
     }
 
     void onVocalizerButtonClick() {
-
+        TranslatorView view = getView();
+        view.startVocalizerWork();
     }
 
     void onRecognizerButtonClick() {
-
+        TranslatorView view = getView();
+        view.startRecognizerWork();
     }
 
+    void onBookmarkButtonClick(String translatedWord) {
+        TranslatorView view = getView();
+        view.changeBookmarkState(translatedWord.equals(lastWord));
+        lastWord = translatedWord;
+    }
 
+    void onFullScreenButtonClick(String word) {
+        TranslatorView view = getView();
+        view.fullScreenMode(word);
+    }
+
+    void onShareButtonClick() {
+        TranslatorView view = getView();
+        view.share();
+    }
 }

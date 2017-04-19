@@ -11,4 +11,7 @@ interface TranslatorView extends MvpView {
     void deleteText();
     void startRecognizerWork();
     void startVocalizerWork();
+    void fullScreenMode(String word);
+    void changeBookmarkState(Boolean state);
+    void share();
 }
