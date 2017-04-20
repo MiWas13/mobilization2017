@@ -9,6 +9,8 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
 
     private String lastWord;
+    private String newWord;
+    private String correctLanguage;
 
     void onViewCreated() {
         TranslatorView view = getView();
@@ -44,5 +46,22 @@ class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
     void onShareButtonClick() {
         TranslatorView view = getView();
         view.share();
+    }
+
+    void onTextChanged(CharSequence s, String lang) {
+        TranslatorView view = getView();
+        newWord = s.toString();
+        correctLanguage = lang;
+        view.createRequest();
+    }
+
+    void getResponse() {
+        TranslatorView view = getView();
+        view.getResponse(newWord, correctLanguage);
+    }
+
+    void setTranslation(String translation) {
+        TranslatorView view = getView();
+        view.setTranslation(translation);
     }
 }

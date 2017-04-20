@@ -2,22 +2,35 @@ package com.example.user.mobilization.ui.translator;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.mobilization.R;
+import com.example.user.mobilization.model.Translation;
+import com.example.user.mobilization.network.Services.TranslationService;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 
+import retrofit2.Call;
+import retrofit2.Callback;
 import ru.yandex.speechkit.SpeechKit;
 
-import static com.example.user.mobilization.ui.Extras.API_SPEECH_KIT_YANDEX_KEY;
+import static com.example.user.mobilization.network.Services.TranslationService.getRestApi;
+import static com.example.user.mobilization.ui.Extras.API_YANDEX_SPEECH_KIT_KEY;
+import static com.example.user.mobilization.ui.Extras.API_YANDEX_TRANSLATOR_KEY;
 import static com.example.user.mobilization.ui.Extras.BUNDLE;
+import static com.example.user.mobilization.ui.Extras.NULL_STRING;
 
 /**
  * Created by User on 12.04.17.
@@ -28,6 +41,7 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
     private View view;
     private EditText editText;
     private Button bookmarkBtn;
+    private TextView translationView;
 
     @Override
     public TranslatorPresenter createPresenter() {
@@ -37,7 +51,7 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstance) {
         super.onViewCreated(view, savedInstance);
-        SpeechKit.getInstance().configure(getActivity(), API_SPEECH_KIT_YANDEX_KEY);
+        SpeechKit.getInstance().configure(getActivity(), API_YANDEX_SPEECH_KIT_KEY);
         presenter.onViewCreated();
     }
 
@@ -58,6 +72,7 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
         Button shareButton = (Button) view.findViewById(R.id.share_button);
         bookmarkBtn = (Button) view.findViewById(R.id.bookmark_button);
         editText = (EditText) view.findViewById(R.id.edit_view);
+        translationView = (TextView) view.findViewById(R.id.translation_view);
 
         deleteTextBtn.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -65,6 +80,24 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
                 return true;
             }
             return false;
+        });
+
+        editText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                presenter.onTextChanged(s, "ru");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
         });
 
         recognizerBtn.setOnClickListener(v -> presenter.onRecognizerButtonClick());
@@ -115,4 +148,44 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
         Toast.makeText(getActivity(), "Функция скоро будет доступна", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void createRequest() {
+        MyTranslatorHandler myTranslatorHandler = new MyTranslatorHandler();
+        Intent intent = new Intent(getActivity(), TranslationService.class);
+        intent.putExtra(BUNDLE, new Messenger(myTranslatorHandler));
+        getActivity().startService(intent);
+    }
+
+    @Override
+    public void getResponse(String word, String lang) {
+        getRestApi().getTranslation(API_YANDEX_TRANSLATOR_KEY, word, lang).enqueue(new Callback<Translation>() {
+            @Override
+            public void onResponse(Call<Translation> call, retrofit2.Response<Translation> response) {
+                if (response.body() == null) {
+                    presenter.setTranslation(NULL_STRING);
+                } else {
+                    presenter.setTranslation(response.body().getText().get(0));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Translation> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private class MyTranslatorHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.obj.equals(true)) {
+                presenter.getResponse();
+            }
+        }
+    }
+
+    @Override
+    public void setTranslation(String translation) {
+        translationView.setText(translation);
+    }
 }
