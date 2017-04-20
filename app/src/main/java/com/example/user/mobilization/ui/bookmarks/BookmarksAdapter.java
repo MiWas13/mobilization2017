@@ -1,6 +1,7 @@
 package com.example.user.mobilization.ui.bookmarks;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import com.example.user.mobilization.R;
 import com.example.user.mobilization.model.BookmarkModel;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 
 public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.ViewHolder> {
     private ArrayList<BookmarkModel> data = new ArrayList<>();
+    private ArrayList<BookmarkModel> cleanData;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -36,6 +39,15 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
         holder.firstLanguage.setText(data.get(position).getTranslated());
         holder.secondLanguage.setText(data.get(position).getTranslation());
         holder.languagesView.setText(data.get(position).getLanguages());
+        holder.bookmarkView.setOnClickListener(v -> {
+            if (data.get(position).isState()) {
+                holder.bookmarkView.setImageResource(R.drawable.ic_bookmark_grey);
+                data.get(position).setState(false);
+            } else {
+                holder.bookmarkView.setImageResource(R.drawable.ic_bookmark_yellow);
+                data.get(position).setState(true);
+            }
+        });
     }
 
     @Override
@@ -60,6 +72,25 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
     public void setData(ArrayList<BookmarkModel> data) {
         this.data.clear();
         this.data = data;
+        cleanData = data;
+    }
+
+    public void searchFilter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        data = new ArrayList<>();
+        Log.e("TEXT", charText);
+        if (charText.length() < 1) {
+            // cleanData содержит неизмененную и неотфильтрованную копию данных списка
+            data.addAll(cleanData);
+        } else {
+            for (int i = 0; i < cleanData.size(); i++) {
+                if ((cleanData.get(i).getTranslation().toLowerCase(Locale.getDefault()).contains(charText)) ||
+                        cleanData.get(i).getTranslated().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    data.add(cleanData.get(i));
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
 }

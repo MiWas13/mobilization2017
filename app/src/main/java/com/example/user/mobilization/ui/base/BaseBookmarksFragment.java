@@ -13,6 +13,9 @@ import com.example.user.mobilization.model.BookmarkModel;
 import com.example.user.mobilization.ui.bookmarks.BookmarksAdapter;
 import com.example.user.mobilization.ui.bookmarks.BookmarksView;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
+import com.lapism.searchview.SearchAdapter;
+import com.lapism.searchview.SearchItem;
+import com.lapism.searchview.SearchView;
 
 import java.util.ArrayList;
 
@@ -28,6 +31,7 @@ public class BaseBookmarksFragment extends MvpFragment<BookmarksView, BaseBookma
     private View view;
     private BookmarksAdapter bookmarksAdapter = new BookmarksAdapter();
     private String tabId = HISTORY_TAB_ID;
+    private SearchView searchView;
 
     private void getArgs() {
         Bundle bundle = this.getArguments();
@@ -61,6 +65,19 @@ public class BaseBookmarksFragment extends MvpFragment<BookmarksView, BaseBookma
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(bookmarksAdapter);
+        searchView = (SearchView) view.findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                bookmarksAdapter.searchFilter(newText);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+        });
     }
 
     @Override

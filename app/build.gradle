@@ -40,7 +40,7 @@ dependencies {
 
     compile 'com.hannesdorfmann.mosby3:mvp:3.0.0'
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
-    compile 'com.lapism:searchview:4.0'
     compile 'com.yandex.android:speechkit:2.5.0'
     compile 'com.roughike:bottom-bar:2.3.1'
+    compile 'com.lapism:searchview:4.0'
 }
