@@ -161,8 +161,7 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
         getRestApi().getTranslation(API_YANDEX_TRANSLATOR_KEY, word, lang).enqueue(new Callback<Translation>() {
             @Override
             public void onResponse(Call<Translation> call, retrofit2.Response<Translation> response) {
-                //TODO:FIX bug then text is null
-                if (response.body().getText() == null) {
+                if (response.body() == null) {
                     presenter.setTranslation(NULL_STRING);
                 } else {
                     presenter.setTranslation(response.body().getText().get(0));
