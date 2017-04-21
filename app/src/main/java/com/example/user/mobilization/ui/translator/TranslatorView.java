@@ -14,4 +14,7 @@ interface TranslatorView extends MvpView {
     void fullScreenMode(String word);
     void changeBookmarkState(Boolean state);
     void share();
+    void createRequest();
+    void getResponse(String word, String lang);
+    void setTranslation(String translation);
 }

@@ -43,4 +43,5 @@ dependencies {
     compile 'com.yandex.android:speechkit:2.5.0'
     compile 'com.roughike:bottom-bar:2.3.1'
     compile 'com.lapism:searchview:4.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
 }
