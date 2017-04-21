@@ -1,6 +1,9 @@
 package com.example.user.mobilization.ui.translator;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -8,6 +11,7 @@ import android.os.Messenger;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.mobilization.R;
+import com.example.user.mobilization.db.TranslationContract;
+import com.example.user.mobilization.db.TranslationDbHelper;
 import com.example.user.mobilization.model.Translation;
 import com.example.user.mobilization.network.Services.TranslationService;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
@@ -42,6 +48,7 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
     private EditText editText;
     private Button bookmarkBtn;
     private TextView translationView;
+    private TranslationInteractor translationInteractor = new TranslationInteractor();
 
     @Override
     public TranslatorPresenter createPresenter() {
@@ -91,12 +98,12 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                presenter.onTextChanged(s, "ru");
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                presenter.onTextChanged(s, "ru");
             }
         });
 
@@ -165,6 +172,9 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
                     presenter.setTranslation(NULL_STRING);
                 } else {
                     presenter.setTranslation(response.body().getText().get(0));
+                    translationInteractor.writeToDb(getActivity(), editText.getText().toString(),
+                            response.body().getText().get(0), response.body().getLang());
+                    readFromDb();
                 }
             }
 
@@ -187,5 +197,15 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
     @Override
     public void setTranslation(String translation) {
         translationView.setText(translation);
+    }
+
+    void readFromDb() {
+        Cursor cursor = TranslationInteractor.readFromDb();
+        cursor.moveToFirst();
+        while (!cursor.isLast()) {
+            String translate = cursor.getString(cursor.getColumnIndexOrThrow(TranslationContract.TranslationEntry.COLUMN_NAME_TRANSLATION));
+            cursor.moveToNext();
+            Log.e("DB", String.valueOf(translate));
+        }
     }
 }
