@@ -1,9 +1,7 @@
 package com.example.user.mobilization.ui.translator;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -23,10 +21,12 @@ import android.widget.Toast;
 
 import com.example.user.mobilization.R;
 import com.example.user.mobilization.db.TranslationContract;
-import com.example.user.mobilization.db.TranslationDbHelper;
 import com.example.user.mobilization.model.Translation;
 import com.example.user.mobilization.network.Services.TranslationService;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,6 +49,10 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
     private Button bookmarkBtn;
     private TextView translationView;
     private TranslationInteractor translationInteractor = new TranslationInteractor();
+    private Timer timer = new Timer();
+    private final long DELAY = 1000;
+    private String newLang;
+    private String newText;
 
     @Override
     public TranslatorPresenter createPresenter() {
@@ -98,12 +102,22 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                if (timer != null)
+                    timer.cancel();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 presenter.onTextChanged(s, "ru");
+                timer = new Timer();
+                if (s.length() > 0) {
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            writeToDb(newText, newLang);
+                        }
+                    }, DELAY);
+                }
             }
         });
 
@@ -153,6 +167,7 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
     @Override
     public void share() {
         Toast.makeText(getActivity(), "Функция скоро будет доступна", Toast.LENGTH_SHORT).show();
+        readFromDb();
     }
 
     @Override
@@ -171,10 +186,9 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
                 if (response.body() == null) {
                     presenter.setTranslation(NULL_STRING);
                 } else {
-                    presenter.setTranslation(response.body().getText().get(0));
-                    translationInteractor.writeToDb(getActivity(), editText.getText().toString(),
-                            response.body().getText().get(0), response.body().getLang());
-                    readFromDb();
+                    newText = response.body().getText().get(0);
+                    presenter.setTranslation(newText);
+                    newLang = response.body().getLang();
                 }
             }
 
@@ -207,5 +221,10 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
             cursor.moveToNext();
             Log.e("DB", String.valueOf(translate));
         }
+    }
+
+    void writeToDb(String text, String language) {
+        getActivity().runOnUiThread(() -> translationInteractor.writeToDb(getActivity(), editText.getText().toString(),
+                text, language));
     }
 }
