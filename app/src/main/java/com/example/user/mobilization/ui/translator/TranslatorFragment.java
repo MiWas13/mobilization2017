@@ -81,7 +81,8 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
         bookmarkBtn = (Button) view.findViewById(R.id.bookmark_button);
         editText = (EditText) view.findViewById(R.id.edit_view);
         translationView = (TextView) view.findViewById(R.id.translation_view);
-
+        TextView yandexView = (TextView) view.findViewById(R.id.yandex_work);
+        yandexView.setVisibility(View.GONE);
         deleteTextBtn.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 presenter.onDeleteButtonClick();
@@ -101,6 +102,7 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (timer != null)
                     timer.cancel();
+                yandexView.setVisibility(View.GONE);
             }
 
             @Override
@@ -108,6 +110,7 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
                 presenter.onTextChanged(s, "ru");
                 timer = new Timer();
                 if (s.length() > 0) {
+                    yandexView.setVisibility(View.VISIBLE);
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
