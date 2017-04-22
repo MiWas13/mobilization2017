@@ -1,5 +1,6 @@
 package com.example.user.mobilization.ui.bookmarks;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -38,5 +39,16 @@ public class BookmarksInteractor {
                 null,
                 sortOrder
         );
+    }
+
+    public void updateDb(Context context, Boolean state) {
+        TranslationDbHelper mDbHelper = new TranslationDbHelper(context);
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TranslationContract.TranslationEntry.COLUMN_NAME_STATE, state);
+        String selection = TranslationContract.TranslationEntry._ID;
+        String[] selectionArgs = {};
+
+        db.update(TranslationContract.TranslationEntry.TABLE_NAME, contentValues, selection, selectionArgs);
     }
 }

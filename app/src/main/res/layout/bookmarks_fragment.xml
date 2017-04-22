@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:layout_marginTop="2dp"
-        app:search_hint="Найти в истории"
         app:search_shadow="false"
         app:search_voice="false" />
 

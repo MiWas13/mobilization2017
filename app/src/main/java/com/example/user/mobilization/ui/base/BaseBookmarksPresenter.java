@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
+import com.example.user.mobilization.R;
 import com.example.user.mobilization.db.TranslationContract;
 import com.example.user.mobilization.model.BookmarkModel;
 import com.example.user.mobilization.ui.bookmarks.BookmarksInteractor;
@@ -34,8 +35,10 @@ public class BaseBookmarksPresenter extends MvpBasePresenter<BookmarksView> {
         BookmarksView view = getView();
         if (tabId.equals(BOOKMARKS_TAB_ID)) {
             view.setAdapter(bookmarksData);
+            view.changeSearch(R.string.search_in_bookmarks);
         } else {
             view.setAdapter(data);
+            view.changeSearch(R.string.search_in_history);
         }
     }
 

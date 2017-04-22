@@ -4,4 +4,6 @@
     <string name="bookmarks">Bookmarks</string>
     <string name="translator">Translator</string>
     <string name="add_text_hint">Введите текст</string>
+    <string name="search_in_history">Найти в истории</string>
+    <string name="search_in_bookmarks">Найти в избранном</string>
 </resources>

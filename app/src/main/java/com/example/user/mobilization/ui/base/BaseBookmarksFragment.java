@@ -32,6 +32,7 @@ public class BaseBookmarksFragment extends MvpFragment<BookmarksView, BaseBookma
     private View view;
     private BookmarksAdapter bookmarksAdapter = new BookmarksAdapter();
     private String tabId = HISTORY_TAB_ID;
+    private SearchView searchView;
 
     private void getArgs() {
         Bundle bundle = this.getArguments();
@@ -61,11 +62,11 @@ public class BaseBookmarksFragment extends MvpFragment<BookmarksView, BaseBookma
 
     @Override
     public void initView() {
+        searchView = (SearchView) view.findViewById(R.id.search_view);
         presenter.setAdapter(getActivity(), tabId);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(bookmarksAdapter);
-        SearchView searchView = (SearchView) view.findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String newText) {
@@ -83,5 +84,10 @@ public class BaseBookmarksFragment extends MvpFragment<BookmarksView, BaseBookma
     @Override
     public void setAdapter(ArrayList<BookmarkModel> data) {
         bookmarksAdapter.setData(data);
+    }
+
+    @Override
+    public void changeSearch(int searchHint) {
+        searchView.setHint(searchHint);
     }
 }

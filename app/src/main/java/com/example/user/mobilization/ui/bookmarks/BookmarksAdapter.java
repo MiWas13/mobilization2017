@@ -22,6 +22,7 @@ import java.util.Locale;
 public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.ViewHolder> {
     private ArrayList<BookmarkModel> data = new ArrayList<>();
     private ArrayList<BookmarkModel> cleanData;
+    private BookmarksInteractor bookmarksInteractor = new BookmarksInteractor();
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -43,6 +44,7 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
             if (data.get(position).isState()) {
                 holder.bookmarkView.setImageResource(R.drawable.ic_bookmark_grey);
                 data.get(position).setState(false);
+
             } else {
                 holder.bookmarkView.setImageResource(R.drawable.ic_bookmark_yellow);
                 data.get(position).setState(true);
