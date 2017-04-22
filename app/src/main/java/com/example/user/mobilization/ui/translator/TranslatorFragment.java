@@ -1,6 +1,7 @@
 package com.example.user.mobilization.ui.translator;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -8,6 +9,7 @@ import android.os.Messenger;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,9 +20,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.mobilization.R;
+import com.example.user.mobilization.db.TranslationContract;
 import com.example.user.mobilization.model.Translation;
 import com.example.user.mobilization.network.Services.TranslationService;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,6 +37,7 @@ import static com.example.user.mobilization.ui.Extras.API_YANDEX_SPEECH_KIT_KEY;
 import static com.example.user.mobilization.ui.Extras.API_YANDEX_TRANSLATOR_KEY;
 import static com.example.user.mobilization.ui.Extras.BUNDLE;
 import static com.example.user.mobilization.ui.Extras.NULL_STRING;
+import static com.example.user.mobilization.ui.Extras.TRANSLATOR_TIMER_DELAY;
 
 /**
  * Created by User on 12.04.17.
@@ -42,6 +49,8 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
     private EditText editText;
     private Button bookmarkBtn;
     private TextView translationView;
+    private Timer timer = new Timer();
+    private String newLang, newText;
 
     @Override
     public TranslatorPresenter createPresenter() {
@@ -61,7 +70,6 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
         view = inflater.inflate(R.layout.translator_fragment, null);
         return view;
     }
-
 
     @Override
     public void initView() {
@@ -91,12 +99,22 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                presenter.onTextChanged(s, "ru");
+                if (timer != null)
+                    timer.cancel();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                presenter.onTextChanged(s, "ru");
+                timer = new Timer();
+                if (s.length() > 0) {
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            presenter.writeToDb(getActivity(), editText.getText().toString(), newText, newLang);
+                        }
+                    }, TRANSLATOR_TIMER_DELAY);
+                }
             }
         });
 
@@ -164,7 +182,9 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
                 if (response.body() == null) {
                     presenter.setTranslation(NULL_STRING);
                 } else {
-                    presenter.setTranslation(response.body().getText().get(0));
+                    newText = response.body().getText().get(0);
+                    presenter.setTranslation(newText);
+                    newLang = response.body().getLang();
                 }
             }
 

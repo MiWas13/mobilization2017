@@ -1,5 +1,7 @@
 package com.example.user.mobilization.ui.translator;
 
+import android.content.Context;
+
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 /**
@@ -11,6 +13,7 @@ class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
     private String lastWord;
     private String newWord;
     private String correctLanguage;
+    private TranslationInteractor translationInteractor = new TranslationInteractor();
 
     void onViewCreated() {
         TranslatorView view = getView();
@@ -63,5 +66,9 @@ class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
     void setTranslation(String translation) {
         TranslatorView view = getView();
         view.setTranslation(translation);
+    }
+
+    void writeToDb(Context context, String translated, String text, String lang) {
+        translationInteractor.writeToDb(context, translated, text, lang);
     }
 }
