@@ -22,7 +22,11 @@ import java.util.Locale;
 public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.ViewHolder> {
     private ArrayList<BookmarkModel> data = new ArrayList<>();
     private ArrayList<BookmarkModel> cleanData;
-    private BookmarksInteractor bookmarksInteractor = new BookmarksInteractor();
+    private BookmarkClick callback;
+
+    public void setBookmarkClickListener(BookmarkClick listener) {
+        this.callback = listener;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -41,6 +45,7 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
         holder.secondLanguage.setText(data.get(position).getTranslation());
         holder.languagesView.setText(data.get(position).getLanguages());
         holder.bookmarkView.setOnClickListener(v -> {
+            callback.bookmarkButtonOnClick(v, position);
             if (data.get(position).isState()) {
                 holder.bookmarkView.setImageResource(R.drawable.ic_bookmark_grey);
                 data.get(position).setState(false);
@@ -86,13 +91,20 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
             data.addAll(cleanData);
         } else {
             for (int i = 0; i < cleanData.size(); i++) {
-                if ((cleanData.get(i).getTranslation().toLowerCase(Locale.getDefault()).contains(charText)) ||
-                        cleanData.get(i).getTranslated().toLowerCase(Locale.getDefault()).contains(charText)) {
-                    data.add(cleanData.get(i));
+                try {
+                    if ((cleanData.get(i).getTranslation().toLowerCase(Locale.getDefault()).contains(charText)) ||
+                            cleanData.get(i).getTranslated().toLowerCase(Locale.getDefault()).contains(charText)) {
+                        data.add(cleanData.get(i));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
         notifyDataSetChanged();
     }
 
+    public interface BookmarkClick {
+        void bookmarkButtonOnClick(View v, int position);
+    }
 }

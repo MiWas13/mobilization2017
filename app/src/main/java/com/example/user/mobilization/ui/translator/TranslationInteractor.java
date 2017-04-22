@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.user.mobilization.db.TranslationContract;
 import com.example.user.mobilization.db.TranslationDbHelper;
@@ -22,6 +23,8 @@ class TranslationInteractor {
         values.put(TranslationContract.TranslationEntry.COLUMN_NAME_TRANSLATION, translation);
         values.put(TranslationContract.TranslationEntry.COLUMN_NAME_STATE, false);
         values.put(TranslationContract.TranslationEntry.COLUMN_NAME_LANGUAGE, language);
-        db.insert(TranslationContract.TranslationEntry.TABLE_NAME, null, values);
+        long rowid;
+        rowid = db.insert(TranslationContract.TranslationEntry.TABLE_NAME, null, values);
+        Log.e("row", String.valueOf(rowid));
     }
 }

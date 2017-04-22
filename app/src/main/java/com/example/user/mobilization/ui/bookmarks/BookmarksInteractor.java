@@ -4,9 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.user.mobilization.db.TranslationContract;
 import com.example.user.mobilization.db.TranslationDbHelper;
+
 
 /**
  * Created by User on 21.04.17.
@@ -14,8 +16,10 @@ import com.example.user.mobilization.db.TranslationDbHelper;
 
 public class BookmarksInteractor {
 
+    private TranslationDbHelper mDbHelper;
+
     public Cursor readFromDb(Context context) {
-        TranslationDbHelper mDbHelper = new TranslationDbHelper(context);
+        mDbHelper = new TranslationDbHelper(context);
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         String[] projection = {
@@ -41,14 +45,12 @@ public class BookmarksInteractor {
         );
     }
 
-    public void updateDb(Context context, Boolean state) {
-        TranslationDbHelper mDbHelper = new TranslationDbHelper(context);
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+    public void updateDb(int position, String state) {
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TranslationContract.TranslationEntry.COLUMN_NAME_STATE, state);
-        String selection = TranslationContract.TranslationEntry._ID;
+        String selection = TranslationContract.TranslationEntry._ID + " =" + position;
         String[] selectionArgs = {};
-
         db.update(TranslationContract.TranslationEntry.TABLE_NAME, contentValues, selection, selectionArgs);
     }
 }

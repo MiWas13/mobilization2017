@@ -79,6 +79,8 @@ public class BaseBookmarksFragment extends MvpFragment<BookmarksView, BaseBookma
                 return false;
             }
         });
+
+        bookmarksAdapter.setBookmarkClickListener((v, position) -> presenter.onBookmarkClick(position));
     }
 
     @Override
@@ -89,5 +91,10 @@ public class BaseBookmarksFragment extends MvpFragment<BookmarksView, BaseBookma
     @Override
     public void changeSearch(int searchHint) {
         searchView.setHint(searchHint);
+    }
+
+    @Override
+    public void changeBookmarkState() {
+
     }
 }

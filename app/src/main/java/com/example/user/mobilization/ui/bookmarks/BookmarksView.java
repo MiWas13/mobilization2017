@@ -13,4 +13,5 @@ public interface BookmarksView extends MvpView {
     void initView();
     void setAdapter(ArrayList<BookmarkModel> data);
     void changeSearch(int searchHint);
+    void changeBookmarkState();
 }

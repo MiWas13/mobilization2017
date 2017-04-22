@@ -24,6 +24,7 @@ public class BaseBookmarksPresenter extends MvpBasePresenter<BookmarksView> {
     private ArrayList<BookmarkModel> data = new ArrayList<>();
     private BookmarksInteractor bookmarksInteractor = new BookmarksInteractor();
     private ArrayList<BookmarkModel> bookmarksData = new ArrayList<>();
+    private int numberOfLastElement;
 
     void onViewCreated() {
         BookmarksView view = getView();
@@ -51,15 +52,19 @@ public class BaseBookmarksPresenter extends MvpBasePresenter<BookmarksView> {
             String translation = cursor.getString(cursor.getColumnIndexOrThrow(TranslationContract.TranslationEntry.COLUMN_NAME_TRANSLATION));
             String language = cursor.getString(cursor.getColumnIndexOrThrow(TranslationContract.TranslationEntry.COLUMN_NAME_LANGUAGE));
             Boolean state = Boolean.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(TranslationContract.TranslationEntry.COLUMN_NAME_STATE)));
+            data.add(i, new BookmarkModel(state, translated, translation, language));
             if (state) {
-                bookmarksData.add(i, new BookmarkModel(true, translated, translation, language));
-            } else {
-                data.add(i, new BookmarkModel(false, translated, translation, language));
+                bookmarksData.add(new BookmarkModel(true, translated, translation, language));
             }
-            Log.e("STATE", state.toString());
-
             cursor.moveToPrevious();
             i++;
         }
+        numberOfLastElement = i;
+    }
+
+    void onBookmarkClick(int position) {
+        BookmarksView view = getView();
+        bookmarksInteractor.updateDb(numberOfLastElement - position, String.valueOf(!(data.get(position).isState())));
+        view.changeBookmarkState();
     }
 }
