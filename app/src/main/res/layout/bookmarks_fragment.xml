@@ -9,7 +9,6 @@
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="65dp"
-        android:layout_marginBottom="5dp"
         android:layout_marginTop="2dp"
         app:search_hint="Найти в истории"
         app:search_shadow="false"
@@ -18,6 +17,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="5dp" />
 </LinearLayout>
 

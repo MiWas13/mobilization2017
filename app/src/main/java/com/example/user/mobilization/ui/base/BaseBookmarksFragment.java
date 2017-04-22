@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import static com.example.user.mobilization.ui.Extras.BUNDLE;
 import static com.example.user.mobilization.ui.Extras.HISTORY_TAB_ID;
+import static com.example.user.mobilization.ui.Extras.NULL_STRING;
 
 /**
  * Created by User on 18.04.17.
@@ -31,12 +32,11 @@ public class BaseBookmarksFragment extends MvpFragment<BookmarksView, BaseBookma
     private View view;
     private BookmarksAdapter bookmarksAdapter = new BookmarksAdapter();
     private String tabId = HISTORY_TAB_ID;
-    private SearchView searchView;
 
     private void getArgs() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            tabId = bundle.getString(BUNDLE, "");
+            tabId = bundle.getString(BUNDLE, NULL_STRING);
         }
     }
 
@@ -61,11 +61,11 @@ public class BaseBookmarksFragment extends MvpFragment<BookmarksView, BaseBookma
 
     @Override
     public void initView() {
-        presenter.setAdapter(tabId);
+        presenter.setAdapter(getActivity(), tabId);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(bookmarksAdapter);
-        searchView = (SearchView) view.findViewById(R.id.search_view);
+        SearchView searchView = (SearchView) view.findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String newText) {

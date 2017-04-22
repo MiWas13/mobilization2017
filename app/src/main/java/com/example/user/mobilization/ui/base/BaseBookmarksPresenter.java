@@ -1,9 +1,13 @@
 package com.example.user.mobilization.ui.base;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.os.Build;
 import android.util.Log;
 
+import com.example.user.mobilization.db.TranslationContract;
 import com.example.user.mobilization.model.BookmarkModel;
+import com.example.user.mobilization.ui.bookmarks.BookmarksInteractor;
 import com.example.user.mobilization.ui.bookmarks.BookmarksView;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
@@ -19,7 +23,7 @@ import static com.example.user.mobilization.ui.Extras.BOOKMARKS_TAB_ID;
 
 public class BaseBookmarksPresenter extends MvpBasePresenter<BookmarksView> {
     private ArrayList<BookmarkModel> data = new ArrayList<>();
-    private ArrayList<BookmarkModel> bookmarksData = new ArrayList<>();
+    private BookmarksInteractor bookmarksInteractor = new BookmarksInteractor();
 
     void onViewCreated() {
         BookmarksView view = getView();
@@ -27,7 +31,7 @@ public class BaseBookmarksPresenter extends MvpBasePresenter<BookmarksView> {
     }
 
     private ArrayList<BookmarkModel> setBookmarksData() {
-        bookmarksData = data;
+        ArrayList<BookmarkModel> bookmarksData = data;
         for (int i = 0; i < bookmarksData.size(); i++) {
             if (!bookmarksData.get(i).isState()) {
                 bookmarksData.remove(i);
@@ -36,8 +40,8 @@ public class BaseBookmarksPresenter extends MvpBasePresenter<BookmarksView> {
         return bookmarksData;
     }
 
-    void setAdapter(String tabId) {
-        setData();
+    void setAdapter(Context context, String tabId) {
+        setData(context);
         BookmarksView view = getView();
         if (tabId.equals(BOOKMARKS_TAB_ID)) {
             view.setAdapter(setBookmarksData());
@@ -46,10 +50,16 @@ public class BaseBookmarksPresenter extends MvpBasePresenter<BookmarksView> {
         }
     }
 
-    private void setData() {
-        data.add(0, new BookmarkModel(true, "Привет", "Hi", "EN->RU"));
-        data.add(1, new BookmarkModel(false, "Как дела?", "How are you?", "EN->RU"));
-        data.add(2, new BookmarkModel(true, "Я тут", "I'm here", "EN->RU"));
-        data.add(3, new BookmarkModel(false, "Мама", "Mother", "EN->RU"));
+    private void setData(Context context) {
+        Cursor cursor = bookmarksInteractor.readFromDb(context);
+        cursor.moveToLast();
+        while (!cursor.isBeforeFirst()) {
+            String translated = cursor.getString(cursor.getColumnIndexOrThrow(TranslationContract.TranslationEntry.COLUMN_NAME_TRANSLATED));
+            String translation = cursor.getString(cursor.getColumnIndexOrThrow(TranslationContract.TranslationEntry.COLUMN_NAME_TRANSLATION));
+            String language = cursor.getString(cursor.getColumnIndexOrThrow(TranslationContract.TranslationEntry.COLUMN_NAME_LANGUAGE));
+            Boolean state = Boolean.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(TranslationContract.TranslationEntry.COLUMN_NAME_STATE)));
+            data.add(new BookmarkModel(state, translated, translation, language));
+            cursor.moveToPrevious();
+        }
     }
 }
