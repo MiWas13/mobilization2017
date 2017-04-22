@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.example.user.mobilization.db.TranslationContract;
 import com.example.user.mobilization.db.TranslationDbHelper;
@@ -52,9 +51,5 @@ class TranslationInteractor {
                 null,
                 sortOrder
         );
-    }
-
-    void updateDb() {
-
     }
 }

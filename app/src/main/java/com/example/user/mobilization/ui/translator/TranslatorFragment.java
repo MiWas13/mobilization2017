@@ -37,6 +37,7 @@ import static com.example.user.mobilization.ui.Extras.API_YANDEX_SPEECH_KIT_KEY;
 import static com.example.user.mobilization.ui.Extras.API_YANDEX_TRANSLATOR_KEY;
 import static com.example.user.mobilization.ui.Extras.BUNDLE;
 import static com.example.user.mobilization.ui.Extras.NULL_STRING;
+import static com.example.user.mobilization.ui.Extras.TRANSLATOR_TIMER_DELAY;
 
 /**
  * Created by User on 12.04.17.
@@ -48,11 +49,8 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
     private EditText editText;
     private Button bookmarkBtn;
     private TextView translationView;
-    private TranslationInteractor translationInteractor = new TranslationInteractor();
     private Timer timer = new Timer();
-    private final long DELAY = 1000;
-    private String newLang;
-    private String newText;
+    private String newLang, newText;
 
     @Override
     public TranslatorPresenter createPresenter() {
@@ -72,7 +70,6 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
         view = inflater.inflate(R.layout.translator_fragment, null);
         return view;
     }
-
 
     @Override
     public void initView() {
@@ -114,9 +111,9 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            writeToDb(newText, newLang);
+                            presenter.writeToDb(getActivity(), editText.getText().toString(), newText, newLang);
                         }
-                    }, DELAY);
+                    }, TRANSLATOR_TIMER_DELAY);
                 }
             }
         });
@@ -167,7 +164,6 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
     @Override
     public void share() {
         Toast.makeText(getActivity(), "Функция скоро будет доступна", Toast.LENGTH_SHORT).show();
-        readFromDb();
     }
 
     @Override
@@ -211,20 +207,5 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
     @Override
     public void setTranslation(String translation) {
         translationView.setText(translation);
-    }
-
-    void readFromDb() {
-        Cursor cursor = TranslationInteractor.readFromDb();
-        cursor.moveToFirst();
-        while (!cursor.isLast()) {
-            String translate = cursor.getString(cursor.getColumnIndexOrThrow(TranslationContract.TranslationEntry.COLUMN_NAME_TRANSLATION));
-            cursor.moveToNext();
-            Log.e("DB", String.valueOf(translate));
-        }
-    }
-
-    void writeToDb(String text, String language) {
-        getActivity().runOnUiThread(() -> translationInteractor.writeToDb(getActivity(), editText.getText().toString(),
-                text, language));
     }
 }
