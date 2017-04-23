@@ -2,13 +2,13 @@
     <tab
         icon="@drawable/ic_translator_black"
         id="@+id/translator_button"
-        title="Translator" />
+        title="Переводчик" />
     <tab
         icon="@drawable/ic_bookmark_black"
         id="@+id/bookmarks_button"
-        title="Bookmarks" />
+        title="История" />
     <tab
         icon="@drawable/ic_settings_black"
         id="@+id/settings_button"
-        title="Settings" />
+        title="Настройки" />
 </tabs>
