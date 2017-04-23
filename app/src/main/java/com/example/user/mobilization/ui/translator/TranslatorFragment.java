@@ -1,7 +1,6 @@
 package com.example.user.mobilization.ui.translator;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,29 +13,39 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.mobilization.R;
-import com.example.user.mobilization.db.TranslationContract;
+import com.example.user.mobilization.model.Language;
 import com.example.user.mobilization.model.Translation;
 import com.example.user.mobilization.network.Services.TranslationService;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 import ru.yandex.speechkit.SpeechKit;
 
 import static com.example.user.mobilization.network.Services.TranslationService.getRestApi;
 import static com.example.user.mobilization.ui.Extras.API_YANDEX_SPEECH_KIT_KEY;
 import static com.example.user.mobilization.ui.Extras.API_YANDEX_TRANSLATOR_KEY;
 import static com.example.user.mobilization.ui.Extras.BUNDLE;
+import static com.example.user.mobilization.ui.Extras.ENGLISH_LANGUAGE;
+import static com.example.user.mobilization.ui.Extras.EXTRA_LANGUAGE_API;
+import static com.example.user.mobilization.ui.Extras.EXTRA_TRANSLATION_API;
 import static com.example.user.mobilization.ui.Extras.NULL_STRING;
+import static com.example.user.mobilization.ui.Extras.RUSSIAN_LANGUAGE;
+import static com.example.user.mobilization.ui.Extras.RUSSIAN_LANGUAGE_CODE;
 import static com.example.user.mobilization.ui.Extras.TRANSLATOR_TIMER_DELAY;
 
 /**
@@ -51,6 +60,8 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
     private TextView translationView;
     private Timer timer = new Timer();
     private String newLang, newText;
+    private Spinner firstLanguageSpinner;
+    private Spinner secondLanguageSpinner;
 
     @Override
     public TranslatorPresenter createPresenter() {
@@ -78,10 +89,13 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
         Button vocalizerBtn = (Button) view.findViewById(R.id.vocalizer_button);
         Button fullScreenBtn = (Button) view.findViewById(R.id.fullscreen_button);
         Button shareButton = (Button) view.findViewById(R.id.share_button);
+        Button changeLanguagesBtn = (Button) view.findViewById(R.id.change_languages_button);
         bookmarkBtn = (Button) view.findViewById(R.id.bookmark_button);
         editText = (EditText) view.findViewById(R.id.edit_view);
         translationView = (TextView) view.findViewById(R.id.translation_view);
         TextView yandexView = (TextView) view.findViewById(R.id.yandex_work);
+        firstLanguageSpinner = (Spinner) view.findViewById(R.id.first_language_spinner);
+        secondLanguageSpinner = (Spinner) view.findViewById(R.id.second_language_spinner);
         yandexView.setVisibility(View.GONE);
         deleteTextBtn.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -107,7 +121,7 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
 
             @Override
             public void afterTextChanged(Editable s) {
-                presenter.onTextChanged(s, "ru");
+                presenter.onTextChanged(s);
                 timer = new Timer();
                 if (s.length() > 0) {
                     yandexView.setVisibility(View.VISIBLE);
@@ -120,6 +134,8 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
                 }
             }
         });
+
+        changeLanguagesBtn.setOnClickListener(v -> presenter.onChangeLanguagesButtonClick());
 
         recognizerBtn.setOnClickListener(v -> presenter.onRecognizerButtonClick());
 
@@ -170,15 +186,35 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
     }
 
     @Override
-    public void createRequest() {
-        MyTranslatorHandler myTranslatorHandler = new MyTranslatorHandler();
+    public void createRequest(String requestType) {
         Intent intent = new Intent(getActivity(), TranslationService.class);
-        intent.putExtra(BUNDLE, new Messenger(myTranslatorHandler));
+        if (requestType.equals(EXTRA_LANGUAGE_API)) {
+            intent.putExtra(BUNDLE, new Messenger(new MyLanguagesHandler()));
+        } else if (requestType.equals(EXTRA_TRANSLATION_API)) {
+            intent.putExtra(BUNDLE, new Messenger(new MyTranslationHandler()));
+        }
+
         getActivity().startService(intent);
     }
 
     @Override
-    public void getResponse(String word, String lang) {
+    public void getLanguagesResponse() {
+        getRestApi().getLanguages(API_YANDEX_TRANSLATOR_KEY, RUSSIAN_LANGUAGE_CODE).enqueue(new Callback<Language>() {
+
+            @Override
+            public void onResponse(Call<Language> call, Response<Language> response) {
+                presenter.setLanguages(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Language> call, Throwable t) {
+
+            }
+        });
+    }
+
+    @Override
+    public void getTranslationResponse(String word, String lang) {
         getRestApi().getTranslation(API_YANDEX_TRANSLATOR_KEY, word, lang).enqueue(new Callback<Translation>() {
             @Override
             public void onResponse(Call<Translation> call, retrofit2.Response<Translation> response) {
@@ -198,11 +234,20 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
         });
     }
 
-    private class MyTranslatorHandler extends Handler {
+    private class MyTranslationHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
             if (msg.obj.equals(true)) {
-                presenter.getResponse();
+                presenter.getTranslationResponse();
+            }
+        }
+    }
+
+    private class MyLanguagesHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.obj.equals(true)) {
+                presenter.getLanguagesResponse();
             }
         }
     }
@@ -210,5 +255,50 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
     @Override
     public void setTranslation(String translation) {
         translationView.setText(translation);
+    }
+
+    @Override
+    public void setSpinnersAdapter(List<String> languages) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, languages);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        firstLanguageSpinner.setAdapter(adapter);
+        secondLanguageSpinner.setAdapter(adapter);
+        firstLanguageSpinner.setSelection(adapter.getPosition(ENGLISH_LANGUAGE));
+        secondLanguageSpinner.setSelection(adapter.getPosition(RUSSIAN_LANGUAGE));
+        firstLanguageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                presenter.updateFirstSpinnerPosition(adapter.getItem(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        secondLanguageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                presenter.updateSecondSpinnerPosition(adapter.getItem(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    @Override
+    public void changeLanguages() {
+        String helpStringArg;
+        int helpIntArg;
+        helpIntArg = firstLanguageSpinner.getSelectedItemPosition();
+        firstLanguageSpinner.setSelection(secondLanguageSpinner.getSelectedItemPosition());
+        secondLanguageSpinner.setSelection(helpIntArg);
+        helpStringArg = String.valueOf(editText.getText());
+        editText.setText(translationView.getText());
+        translationView.setText(helpStringArg);
     }
 }

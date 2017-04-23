@@ -3,7 +3,6 @@ package com.example.user.mobilization.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.lang.reflect.Array;
 import java.util.List;
 
 /**

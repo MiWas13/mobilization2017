@@ -2,7 +2,19 @@ package com.example.user.mobilization.ui.translator;
 
 import android.content.Context;
 
+import com.example.user.mobilization.model.Language;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import static com.example.user.mobilization.ui.Extras.EXTRA_LANGUAGE_API;
+import static com.example.user.mobilization.ui.Extras.EXTRA_TRANSLATION_API;
+import static com.example.user.mobilization.ui.Extras.LANGUAGE_DIVIDER;
+import static com.example.user.mobilization.ui.Extras.NULL_STRING;
 
 /**
  * Created by User on 12.04.17.
@@ -10,13 +22,16 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
 
+    private TranslationInteractor translationInteractor = new TranslationInteractor();
     private String lastWord;
     private String newWord;
-    private String correctLanguage;
-    private TranslationInteractor translationInteractor = new TranslationInteractor();
+    private Map<String, String> languages;
+    private String firstLangCode = "en";
+    private String secondLangCode = "ru";
 
     void onViewCreated() {
         TranslatorView view = getView();
+        view.createRequest(EXTRA_LANGUAGE_API);
         view.initView();
     }
 
@@ -51,16 +66,21 @@ class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
         view.share();
     }
 
-    void onTextChanged(CharSequence s, String lang) {
+    void onTextChanged(CharSequence s) {
         TranslatorView view = getView();
         newWord = s.toString();
-        correctLanguage = lang;
-        view.createRequest();
+        view.createRequest(EXTRA_TRANSLATION_API);
     }
 
-    void getResponse() {
+    void getLanguagesResponse() {
         TranslatorView view = getView();
-        view.getResponse(newWord, correctLanguage);
+        view.getLanguagesResponse();
+    }
+
+    void getTranslationResponse() {
+        TranslatorView view = getView();
+        String correctLanguage = firstLangCode + LANGUAGE_DIVIDER + secondLangCode;
+        view.getTranslationResponse(newWord, correctLanguage);
     }
 
     void setTranslation(String translation) {
@@ -70,5 +90,44 @@ class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
 
     void writeToDb(Context context, String translated, String text, String lang) {
         translationInteractor.writeToDb(context, translated, text, lang);
+    }
+
+    void setLanguages(Language languages) {
+        TranslatorView view = getView();
+        this.languages = languages.getLanguages();
+        Collection<String> languagesArray = languages.getLanguages().values();
+        List<String> list = new ArrayList<>(languagesArray);
+        Collections.sort(list);
+        view.setSpinnersAdapter(list);
+    }
+
+    void onChangeLanguagesButtonClick() {
+        String helpArg;
+        TranslatorView view = getView();
+        helpArg = firstLangCode;
+        firstLangCode = secondLangCode;
+        secondLangCode = helpArg;
+        view.changeLanguages();
+    }
+
+    void updateFirstSpinnerPosition(String language) {
+        firstLangCode = findLanguageCode(language);
+    }
+
+    void updateSecondSpinnerPosition(String language) {
+        secondLangCode = findLanguageCode(language);
+    }
+
+    String findLanguageCode(String language) {
+        String code = NULL_STRING;
+        for (String key : languages.keySet()) {
+            Object obj = languages.get(key);
+            if (key != null) {
+                if (language.equals(obj)) {
+                    code = key;
+                }
+            }
+        }
+        return code;
     }
 }
