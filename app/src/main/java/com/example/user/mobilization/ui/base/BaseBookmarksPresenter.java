@@ -62,8 +62,12 @@ public class BaseBookmarksPresenter extends MvpBasePresenter<BookmarksView> {
     }
 
     void onBookmarkClick(int position) {
-        BookmarksView view = getView();
         bookmarksInteractor.updateDb(numberOfLastElement - position, String.valueOf(!(data.get(position).isState())));
-        view.changeBookmarkState();
+    }
+
+    void deleteHistory() {
+        BookmarksView view = getView();
+        bookmarksInteractor.deleteFromDb();
+        view.deleteHistory();
     }
 }

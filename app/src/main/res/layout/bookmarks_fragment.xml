@@ -10,13 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:layout_marginTop="2dp"
+        app:search_navigation_icon="@drawable/ic_bucket"
         app:search_shadow="false"
         app:search_voice="false" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="5dp" />
+
 </LinearLayout>
 

@@ -107,4 +107,9 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
     public interface BookmarkClick {
         void bookmarkButtonOnClick(View v, int position);
     }
+
+    public void deleteItems(){
+        data.clear();
+        notifyDataSetChanged();
+    }
 }
