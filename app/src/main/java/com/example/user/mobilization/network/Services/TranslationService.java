@@ -12,14 +12,12 @@ import android.os.RemoteException;
 import android.support.annotation.RequiresApi;
 
 import com.example.user.mobilization.network.RestApi;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.example.user.mobilization.ui.Extras.API_YANDEX_TRANSLATOR_BASE_URL;
-import static com.example.user.mobilization.ui.Extras.BUNDLE;
+import static com.example.user.mobilization.utils.Constants.API_YANDEX_TRANSLATOR_BASE_URL;
+import static com.example.user.mobilization.utils.Constants.BUNDLE;
 
 public class TranslationService extends Service {
     public TranslationService() {

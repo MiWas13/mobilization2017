@@ -2,7 +2,6 @@ package com.example.user.mobilization.ui.base;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
 import com.example.user.mobilization.R;
 import com.example.user.mobilization.db.TranslationContract;
@@ -13,7 +12,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.ArrayList;
 
-import static com.example.user.mobilization.ui.Extras.BOOKMARKS_TAB_ID;
+import static com.example.user.mobilization.utils.Constants.BOOKMARKS_TAB_ID;
 
 
 /**

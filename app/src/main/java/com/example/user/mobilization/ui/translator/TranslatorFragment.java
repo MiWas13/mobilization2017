@@ -8,7 +8,6 @@ import android.os.Messenger;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -37,16 +36,16 @@ import retrofit2.Response;
 import ru.yandex.speechkit.SpeechKit;
 
 import static com.example.user.mobilization.network.Services.TranslationService.getRestApi;
-import static com.example.user.mobilization.ui.Extras.API_YANDEX_SPEECH_KIT_KEY;
-import static com.example.user.mobilization.ui.Extras.API_YANDEX_TRANSLATOR_KEY;
-import static com.example.user.mobilization.ui.Extras.BUNDLE;
-import static com.example.user.mobilization.ui.Extras.ENGLISH_LANGUAGE;
-import static com.example.user.mobilization.ui.Extras.EXTRA_LANGUAGE_API;
-import static com.example.user.mobilization.ui.Extras.EXTRA_TRANSLATION_API;
-import static com.example.user.mobilization.ui.Extras.NULL_STRING;
-import static com.example.user.mobilization.ui.Extras.RUSSIAN_LANGUAGE;
-import static com.example.user.mobilization.ui.Extras.RUSSIAN_LANGUAGE_CODE;
-import static com.example.user.mobilization.ui.Extras.TRANSLATOR_TIMER_DELAY;
+import static com.example.user.mobilization.utils.Constants.API_YANDEX_SPEECH_KIT_KEY;
+import static com.example.user.mobilization.utils.Constants.API_YANDEX_TRANSLATOR_KEY;
+import static com.example.user.mobilization.utils.Constants.BUNDLE;
+import static com.example.user.mobilization.utils.Constants.ENGLISH_LANGUAGE;
+import static com.example.user.mobilization.utils.Constants.EXTRA_LANGUAGE_API;
+import static com.example.user.mobilization.utils.Constants.EXTRA_TRANSLATION_API;
+import static com.example.user.mobilization.utils.Constants.NULL_STRING;
+import static com.example.user.mobilization.utils.Constants.RUSSIAN_LANGUAGE;
+import static com.example.user.mobilization.utils.Constants.RUSSIAN_LANGUAGE_CODE;
+import static com.example.user.mobilization.utils.Constants.TRANSLATOR_TIMER_DELAY;
 
 /**
  * Created by User on 12.04.17.

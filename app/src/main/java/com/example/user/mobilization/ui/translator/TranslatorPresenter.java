@@ -11,10 +11,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static com.example.user.mobilization.ui.Extras.EXTRA_LANGUAGE_API;
-import static com.example.user.mobilization.ui.Extras.EXTRA_TRANSLATION_API;
-import static com.example.user.mobilization.ui.Extras.LANGUAGE_DIVIDER;
-import static com.example.user.mobilization.ui.Extras.NULL_STRING;
+import static com.example.user.mobilization.utils.Constants.EXTRA_LANGUAGE_API;
+import static com.example.user.mobilization.utils.Constants.EXTRA_TRANSLATION_API;
+import static com.example.user.mobilization.utils.Constants.LANGUAGE_DIVIDER;
+import static com.example.user.mobilization.utils.Constants.NULL_STRING;
 
 /**
  * Created by User on 12.04.17.

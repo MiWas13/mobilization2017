@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.user.mobilization.R;
 
-import static com.example.user.mobilization.ui.Extras.BUNDLE;
+import static com.example.user.mobilization.utils.Constants.BUNDLE;
 
 /**
  * Created by User on 18.04.17.

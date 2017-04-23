@@ -12,9 +12,9 @@ import com.example.user.mobilization.ui.base.BaseBookmarksFragment;
 import com.example.user.mobilization.ui.base.BaseBookmarksPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 
-import static com.example.user.mobilization.ui.Extras.BOOKMARKS_TAB_ID;
-import static com.example.user.mobilization.ui.Extras.BUNDLE;
-import static com.example.user.mobilization.ui.Extras.HISTORY_TAB_ID;
+import static com.example.user.mobilization.utils.Constants.BOOKMARKS_TAB_ID;
+import static com.example.user.mobilization.utils.Constants.BUNDLE;
+import static com.example.user.mobilization.utils.Constants.HISTORY_TAB_ID;
 
 /**
  * Created by User on 12.04.17.
