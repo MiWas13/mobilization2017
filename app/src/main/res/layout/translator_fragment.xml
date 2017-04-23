@@ -129,15 +129,16 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/ic_expand_grey"
                 android:padding="10dp" />
-
-            <TextView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/white"
-                android:padding="10dp" />
         </LinearLayout>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/yandex_work"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="10dp"
+        android:text="@string/yandex_work"
+        android:textColor="@color/black" />
 
 </LinearLayout>
