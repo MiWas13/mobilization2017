@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.example.user.mobilization.db.TranslationContract;
 import com.example.user.mobilization.db.TranslationDbHelper;
@@ -52,5 +51,12 @@ public class BookmarksInteractor {
         String selection = TranslationContract.TranslationEntry._ID + " =" + position;
         String[] selectionArgs = {};
         db.update(TranslationContract.TranslationEntry.TABLE_NAME, contentValues, selection, selectionArgs);
+    }
+
+    public void deleteFromDb() {
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        String selection = TranslationContract.TranslationEntry._ID;
+        String[] selectionArgs = {};
+        db.delete(TranslationContract.TranslationEntry.TABLE_NAME, selection, selectionArgs);
     }
 }

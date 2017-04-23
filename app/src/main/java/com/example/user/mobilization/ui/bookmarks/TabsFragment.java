@@ -54,9 +54,5 @@ public class TabsFragment extends MvpFragment<BookmarksView, BaseBookmarksPresen
                 BaseBookmarksFragment.class, historyBundle);
         mTabHost.addTab(mTabHost.newTabSpec(BOOKMARKS_TAB_ID).setIndicator("Избранное"),
                 BaseBookmarksFragment.class, bookmarksBundle);
-
-//        mTabHost.setOnTabChangedListener(tabId -> presenter.onTabSelected(tabId));
     }
-
-
 }
