@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -218,7 +219,8 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
 
             @Override
             public void onFailure(Call<Language> call, Throwable t) {
-
+                showFailSnackBar();
+                t.printStackTrace();
             }
         });
     }
@@ -228,9 +230,7 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
         getRestApi().getTranslation(API_YANDEX_TRANSLATOR_KEY, word, lang).enqueue(new Callback<Translation>() {
             @Override
             public void onResponse(Call<Translation> call, retrofit2.Response<Translation> response) {
-                progressBar.setVisibility(View.GONE);
-                translationLayout.setVisibility(View.VISIBLE);
-                yandexView.setVisibility(View.VISIBLE);
+                haveResponse();
                 if (response.body() == null) {
                     presenter.setTranslation(NULL_STRING);
                 } else {
@@ -242,8 +242,9 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
 
             @Override
             public void onFailure(Call<Translation> call, Throwable t) {
+                haveResponse();
+                showFailSnackBar();
                 t.printStackTrace();
-                Log.e("", "Я упал(");
             }
         });
     }
@@ -314,5 +315,15 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
         helpStringArg = String.valueOf(editText.getText());
         editText.setText(translationView.getText());
         translationView.setText(helpStringArg);
+    }
+
+    void haveResponse() {
+        progressBar.setVisibility(View.GONE);
+        translationLayout.setVisibility(View.VISIBLE);
+        yandexView.setVisibility(View.VISIBLE);
+    }
+
+    void showFailSnackBar() {
+        Snackbar.make(view, R.string.problems, Snackbar.LENGTH_SHORT).show();
     }
 }
