@@ -1,10 +1,7 @@
 package com.example.user.mobilization.ui.translator;
 
-import com.example.user.mobilization.model.Language;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -24,4 +21,5 @@ interface TranslatorView extends MvpView {
     void getTranslationResponse(String word, String lang);
     void setTranslation(String translation);
     void setSpinnersAdapter(List<String> languages);
+    void changeLanguages();
 }

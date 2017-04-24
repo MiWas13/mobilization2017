@@ -89,6 +89,7 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
         Button vocalizerBtn = (Button) view.findViewById(R.id.vocalizer_button);
         Button fullScreenBtn = (Button) view.findViewById(R.id.fullscreen_button);
         Button shareButton = (Button) view.findViewById(R.id.share_button);
+        Button changeLanguagesBtn = (Button) view.findViewById(R.id.change_languages_button);
         bookmarkBtn = (Button) view.findViewById(R.id.bookmark_button);
         editText = (EditText) view.findViewById(R.id.edit_view);
         translationView = (TextView) view.findViewById(R.id.translation_view);
@@ -133,6 +134,8 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
                 }
             }
         });
+
+        changeLanguagesBtn.setOnClickListener(v -> presenter.onChangeLanguagesButtonClick());
 
         recognizerBtn.setOnClickListener(v -> presenter.onRecognizerButtonClick());
 
@@ -285,5 +288,17 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
 
             }
         });
+    }
+
+    @Override
+    public void changeLanguages() {
+        String helpStringArg;
+        int helpIntArg;
+        helpIntArg = firstLanguageSpinner.getSelectedItemPosition();
+        firstLanguageSpinner.setSelection(secondLanguageSpinner.getSelectedItemPosition());
+        secondLanguageSpinner.setSelection(helpIntArg);
+        helpStringArg = String.valueOf(editText.getText());
+        editText.setText(translationView.getText());
+        translationView.setText(helpStringArg);
     }
 }

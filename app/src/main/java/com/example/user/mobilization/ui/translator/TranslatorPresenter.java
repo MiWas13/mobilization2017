@@ -1,7 +1,6 @@
 package com.example.user.mobilization.ui.translator;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.user.mobilization.model.Language;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
@@ -100,6 +99,15 @@ class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
         List<String> list = new ArrayList<>(languagesArray);
         Collections.sort(list);
         view.setSpinnersAdapter(list);
+    }
+
+    void onChangeLanguagesButtonClick() {
+        String helpArg;
+        TranslatorView view = getView();
+        helpArg = firstLangCode;
+        firstLangCode = secondLangCode;
+        secondLangCode = helpArg;
+        view.changeLanguages();
     }
 
     void updateFirstSpinnerPosition(String language) {
