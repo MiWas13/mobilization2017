@@ -10,13 +10,14 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
  */
 
 class MainPresenter extends MvpBasePresenter<MainView> {
+    private MainView view;
+
     void initView() {
-        MainView view = getView();
+        view = getView();
         view.initView();
     }
 
     void setFragment(Fragment fragment) {
-        MainView view = getView();
         view.setSelectedFragment(fragment);
     }
 }
