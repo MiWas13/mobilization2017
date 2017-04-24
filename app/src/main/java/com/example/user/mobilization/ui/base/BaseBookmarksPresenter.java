@@ -20,19 +20,19 @@ import static com.example.user.mobilization.utils.Constants.BOOKMARKS_TAB_ID;
  */
 
 public class BaseBookmarksPresenter extends MvpBasePresenter<BookmarksView> {
+    private BookmarksView view;
     private ArrayList<BookmarkModel> data = new ArrayList<>();
     private BookmarksInteractor bookmarksInteractor = new BookmarksInteractor();
     private ArrayList<BookmarkModel> bookmarksData = new ArrayList<>();
     private int numberOfLastElement;
 
     void onViewCreated() {
-        BookmarksView view = getView();
+        view = getView();
         view.initView();
     }
 
     void setAdapter(Context context, String tabId) {
         setData(context);
-        BookmarksView view = getView();
         if (tabId.equals(BOOKMARKS_TAB_ID)) {
             view.setAdapter(bookmarksData);
             view.changeSearch(R.string.search_in_bookmarks);
@@ -66,7 +66,6 @@ public class BaseBookmarksPresenter extends MvpBasePresenter<BookmarksView> {
     }
 
     void deleteHistory() {
-        BookmarksView view = getView();
         bookmarksInteractor.deleteFromDb();
         view.deleteHistory();
     }

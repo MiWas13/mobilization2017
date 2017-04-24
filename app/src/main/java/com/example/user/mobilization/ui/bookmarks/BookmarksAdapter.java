@@ -1,7 +1,6 @@
 package com.example.user.mobilization.ui.bookmarks;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +84,6 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
     public void searchFilter(String charText) {
         charText = charText.toLowerCase(Locale.getDefault());
         data = new ArrayList<>();
-        Log.e("TEXT", charText);
         if (charText.length() < 1) {
             // cleanData содержит неизмененную и неотфильтрованную копию данных списка
             data.addAll(cleanData);

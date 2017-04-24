@@ -20,20 +20,8 @@ public class Translation {
     @Expose
     private List<String> text;
 
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
     public String getLang() {
         return lang;
-    }
-
-    public void setLang(String lang) {
-        this.lang = lang;
     }
 
     public List<String> getText() {

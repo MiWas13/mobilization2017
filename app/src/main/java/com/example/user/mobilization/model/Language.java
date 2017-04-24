@@ -19,9 +19,4 @@ public class Language {
     public Map<String, String> getLanguages() {
         return languages;
     }
-
-    public void setLanguages(Map<String, String> language) {
-        this.languages = language;
-    }
-
 }

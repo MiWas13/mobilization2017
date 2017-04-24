@@ -1,6 +1,5 @@
 package com.example.user.mobilization.ui.main;
 
-
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
