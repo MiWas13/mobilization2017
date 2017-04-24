@@ -39,6 +39,7 @@ public class TranslationService extends Service {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             restApi = retrofit.create(RestApi.class);
+            //Отправляем в Handler message со статусом выполнения запроса
             Message message = Message.obtain();
             message.obj = true;
             try {

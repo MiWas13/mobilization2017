@@ -22,6 +22,8 @@ import static com.example.user.mobilization.utils.Constants.BOOKMARKS_TAB_ID;
 public class BaseBookmarksPresenter extends MvpBasePresenter<BookmarksView> {
     private BookmarksView view;
     private ArrayList<BookmarkModel> data = new ArrayList<>();
+    //Не уверен, правильно ли создавлять экземляр интерактора или же надо было его пробрасывать в конструктор.
+    //Хотел бы получить фидбэк по этому вопосу, если возмонжно
     private BookmarksInteractor bookmarksInteractor = new BookmarksInteractor();
     private ArrayList<BookmarkModel> bookmarksData = new ArrayList<>();
     private int numberOfLastElement;
@@ -33,6 +35,7 @@ public class BaseBookmarksPresenter extends MvpBasePresenter<BookmarksView> {
 
     void setAdapter(Context context, String tabId) {
         setData(context);
+        //в зависимости от вкладки вставляем разную data
         if (tabId.equals(BOOKMARKS_TAB_ID)) {
             view.setAdapter(bookmarksData);
             view.changeSearch(R.string.search_in_bookmarks);
@@ -46,6 +49,7 @@ public class BaseBookmarksPresenter extends MvpBasePresenter<BookmarksView> {
         Cursor cursor = bookmarksInteractor.readFromDb(context);
         cursor.moveToLast();
         int i = 0;
+        //расположим записи их БД в обратном порядке, для того, чтобы последняя запись добавлялась вверх recyclerview
         while (!cursor.isBeforeFirst()) {
             String translated = cursor.getString(cursor.getColumnIndexOrThrow(TranslationContract.TranslationEntry.COLUMN_NAME_TRANSLATED));
             String translation = cursor.getString(cursor.getColumnIndexOrThrow(TranslationContract.TranslationEntry.COLUMN_NAME_TRANSLATION));
@@ -53,6 +57,7 @@ public class BaseBookmarksPresenter extends MvpBasePresenter<BookmarksView> {
             Boolean state = Boolean.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(TranslationContract.TranslationEntry.COLUMN_NAME_STATE)));
             data.add(i, new BookmarkModel(state, translated, translation, language));
             if (state) {
+                //второй Array, который содержит закладки
                 bookmarksData.add(new BookmarkModel(true, translated, translation, language));
             }
             cursor.moveToPrevious();
