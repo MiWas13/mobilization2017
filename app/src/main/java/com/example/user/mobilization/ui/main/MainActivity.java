@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.example.user.mobilization.R;
 import com.example.user.mobilization.ui.bookmarks.TabsFragment;
+import com.example.user.mobilization.ui.settings.SettingsFragment;
 import com.example.user.mobilization.ui.translator.TranslatorFragment;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.roughike.bottombar.BottomBar;
@@ -39,7 +40,7 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
                     presenter.setFragment(new TabsFragment());
                     break;
                 case R.id.settings_button:
-//                    presenter.setFragment(new TranslatorFragment());
+                    presenter.setFragment(new SettingsFragment());
                     break;
             }
         });

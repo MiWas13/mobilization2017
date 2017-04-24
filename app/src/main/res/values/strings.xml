@@ -9,6 +9,7 @@
     <string name="yandex_work">Переведено сервисом «Яндекс.Переводчик»</string>
     <string name="problems">Возникла проблема во время соединения с сервером.
         Проверьте подключение к интернету</string>
+    <string name="settings_text">Раздел находится в разработке</string>
     <string-array name="first_spinner">
         <item>Английский</item>
     </string-array>
