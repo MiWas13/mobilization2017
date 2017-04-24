@@ -104,13 +104,9 @@ public class BaseBookmarksFragment extends MvpFragment<BookmarksView, BaseBookma
         AlertDialog.Builder quitDialog = new AlertDialog.Builder(getActivity());
         quitDialog.setTitle("Очистить историю?");
 
-        quitDialog.setPositiveButton("Да", (dialog, which) -> {
-            presenter.deleteHistory();
-        });
+        quitDialog.setPositiveButton("Да", (dialog, which) -> presenter.deleteHistory());
 
-        quitDialog.setNegativeButton("Отменить", (dialog, which) -> {
-
-        });
+        quitDialog.setNegativeButton("Отменить", (dialog, which) -> {});
 
         quitDialog.show();
     }
