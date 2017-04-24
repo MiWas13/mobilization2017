@@ -25,7 +25,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:background="@color/colorAccent"
-                android:entries="@array/languages"
+                android:entries="@array/first_spinner"
                 android:gravity="center"
                 android:textAlignment="center" />
 
@@ -44,7 +44,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_weight="1"
                 android:background="@color/colorAccent"
-                android:entries="@array/languages"
+                android:entries="@array/second_spinner"
                 android:textAlignment="center" />
 
         </LinearLayout>
@@ -123,6 +123,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/translation_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
@@ -184,6 +185,14 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="10dp"
         android:text="@string/yandex_work"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:visibility="gone" />
+
+    <ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/progress_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
 
 </LinearLayout>

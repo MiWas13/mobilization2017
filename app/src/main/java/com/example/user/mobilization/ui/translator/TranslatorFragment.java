@@ -8,6 +8,7 @@ import android.os.Messenger;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,6 +17,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,12 +58,14 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
 
     private View view;
     private EditText editText;
+    private TextView yandexView;
     private Button bookmarkBtn;
     private TextView translationView;
     private Timer timer = new Timer();
     private String newLang, newText;
-    private Spinner firstLanguageSpinner;
-    private Spinner secondLanguageSpinner;
+    private Spinner firstLanguageSpinner, secondLanguageSpinner;
+    private LinearLayout translationLayout;
+    private ProgressBar progressBar;
 
     @Override
     public TranslatorPresenter createPresenter() {
@@ -83,6 +88,8 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
 
     @Override
     public void initView() {
+        progressBar = (ProgressBar) view.findViewById(R.id.progress_view);
+        translationLayout = (LinearLayout) view.findViewById(R.id.translation_layout);
         Button deleteTextBtn = (Button) view.findViewById(R.id.delete_button);
         Button recognizerBtn = (Button) view.findViewById(R.id.recognizer_button);
         Button vocalizerBtn = (Button) view.findViewById(R.id.vocalizer_button);
@@ -92,10 +99,11 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
         bookmarkBtn = (Button) view.findViewById(R.id.bookmark_button);
         editText = (EditText) view.findViewById(R.id.edit_view);
         translationView = (TextView) view.findViewById(R.id.translation_view);
-        TextView yandexView = (TextView) view.findViewById(R.id.yandex_work);
+        yandexView = (TextView) view.findViewById(R.id.yandex_work);
         firstLanguageSpinner = (Spinner) view.findViewById(R.id.first_language_spinner);
         secondLanguageSpinner = (Spinner) view.findViewById(R.id.second_language_spinner);
         yandexView.setVisibility(View.GONE);
+        translationLayout.setVisibility(View.GONE);
         deleteTextBtn.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 presenter.onDeleteButtonClick();
@@ -116,6 +124,8 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
                 if (timer != null)
                     timer.cancel();
                 yandexView.setVisibility(View.GONE);
+                translationLayout.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -123,13 +133,14 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
                 presenter.onTextChanged(s);
                 timer = new Timer();
                 if (s.length() > 0) {
-                    yandexView.setVisibility(View.VISIBLE);
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
                             presenter.writeToDb(getActivity(), editText.getText().toString(), newText, newLang);
                         }
                     }, TRANSLATOR_TIMER_DELAY);
+                } else {
+                    yandexView.setVisibility(View.GONE);
                 }
             }
         });
@@ -217,6 +228,9 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
         getRestApi().getTranslation(API_YANDEX_TRANSLATOR_KEY, word, lang).enqueue(new Callback<Translation>() {
             @Override
             public void onResponse(Call<Translation> call, retrofit2.Response<Translation> response) {
+                progressBar.setVisibility(View.GONE);
+                translationLayout.setVisibility(View.VISIBLE);
+                yandexView.setVisibility(View.VISIBLE);
                 if (response.body() == null) {
                     presenter.setTranslation(NULL_STRING);
                 } else {
@@ -229,6 +243,7 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
             @Override
             public void onFailure(Call<Translation> call, Throwable t) {
                 t.printStackTrace();
+                Log.e("", "Я упал(");
             }
         });
     }
