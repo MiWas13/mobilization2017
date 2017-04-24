@@ -13,15 +13,13 @@ import com.example.user.mobilization.model.BookmarkModel;
 import com.example.user.mobilization.ui.bookmarks.BookmarksAdapter;
 import com.example.user.mobilization.ui.bookmarks.BookmarksView;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
-import com.lapism.searchview.SearchAdapter;
-import com.lapism.searchview.SearchItem;
 import com.lapism.searchview.SearchView;
 
 import java.util.ArrayList;
 
-import static com.example.user.mobilization.ui.Extras.BUNDLE;
-import static com.example.user.mobilization.ui.Extras.HISTORY_TAB_ID;
-import static com.example.user.mobilization.ui.Extras.NULL_STRING;
+import static com.example.user.mobilization.utils.Constants.BUNDLE;
+import static com.example.user.mobilization.utils.Constants.HISTORY_TAB_ID;
+import static com.example.user.mobilization.utils.Constants.NULL_STRING;
 
 /**
  * Created by User on 18.04.17.
