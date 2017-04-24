@@ -17,4 +17,6 @@ public final class Extras {
     public static final String EXTRA_TRANSLATION_API = "translation";
     public static final String ENGLISH_LANGUAGE = "Английский";
     public static final String RUSSIAN_LANGUAGE = "Русский";
+    public static final String LANGUAGE_DIVIDER = "-";
+
 }

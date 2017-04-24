@@ -120,7 +120,7 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
 
             @Override
             public void afterTextChanged(Editable s) {
-                presenter.onTextChanged(s, "ru");
+                presenter.onTextChanged(s);
                 timer = new Timer();
                 if (s.length() > 0) {
                     yandexView.setVisibility(View.VISIBLE);

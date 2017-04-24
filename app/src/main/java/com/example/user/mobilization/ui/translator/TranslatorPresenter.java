@@ -14,6 +14,7 @@ import java.util.Map;
 
 import static com.example.user.mobilization.ui.Extras.EXTRA_LANGUAGE_API;
 import static com.example.user.mobilization.ui.Extras.EXTRA_TRANSLATION_API;
+import static com.example.user.mobilization.ui.Extras.LANGUAGE_DIVIDER;
 import static com.example.user.mobilization.ui.Extras.NULL_STRING;
 
 /**
@@ -25,7 +26,6 @@ class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
     private TranslationInteractor translationInteractor = new TranslationInteractor();
     private String lastWord;
     private String newWord;
-    private String correctLanguage;
     private Map<String, String> languages;
     private String firstLangCode = "en";
     private String secondLangCode = "ru";
@@ -67,10 +67,9 @@ class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
         view.share();
     }
 
-    void onTextChanged(CharSequence s, String lang) {
+    void onTextChanged(CharSequence s) {
         TranslatorView view = getView();
         newWord = s.toString();
-        correctLanguage = lang;
         view.createRequest(EXTRA_TRANSLATION_API);
     }
 
@@ -81,6 +80,7 @@ class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
 
     void getTranslationResponse() {
         TranslatorView view = getView();
+        String correctLanguage = firstLangCode + LANGUAGE_DIVIDER + secondLangCode;
         view.getTranslationResponse(newWord, correctLanguage);
     }
 
@@ -104,12 +104,10 @@ class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
 
     void updateFirstSpinnerPosition(String language) {
         firstLangCode = findLanguageCode(language);
-        Log.e("first", firstLangCode);
     }
 
     void updateSecondSpinnerPosition(String language) {
         secondLangCode = findLanguageCode(language);
-        Log.e("second", secondLangCode);
     }
 
     String findLanguageCode(String language) {
