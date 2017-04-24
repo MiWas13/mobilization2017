@@ -22,6 +22,7 @@ import static com.example.user.mobilization.utils.Constants.NULL_STRING;
 
 class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
 
+    private TranslatorView view;
     private TranslationInteractor translationInteractor = new TranslationInteractor();
     private String lastWord;
     private String newWord;
@@ -30,61 +31,51 @@ class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
     private String secondLangCode = "ru";
 
     void onViewCreated() {
-        TranslatorView view = getView();
+        view = getView();
         view.createRequest(EXTRA_LANGUAGE_API);
         view.initView();
     }
 
     void onDeleteButtonClick() {
-        TranslatorView view = getView();
         view.deleteText();
     }
 
     void onVocalizerButtonClick() {
-        TranslatorView view = getView();
         view.startVocalizerWork();
     }
 
     void onRecognizerButtonClick() {
-        TranslatorView view = getView();
         view.startRecognizerWork();
     }
 
     void onBookmarkButtonClick(String translatedWord) {
-        TranslatorView view = getView();
         view.changeBookmarkState(translatedWord.equals(lastWord));
         lastWord = translatedWord;
     }
 
     void onFullScreenButtonClick(String word) {
-        TranslatorView view = getView();
         view.fullScreenMode(word);
     }
 
     void onShareButtonClick() {
-        TranslatorView view = getView();
         view.share();
     }
 
     void onTextChanged(CharSequence s) {
-        TranslatorView view = getView();
         newWord = s.toString();
         view.createRequest(EXTRA_TRANSLATION_API);
     }
 
     void getLanguagesResponse() {
-        TranslatorView view = getView();
         view.getLanguagesResponse();
     }
 
     void getTranslationResponse() {
-        TranslatorView view = getView();
         String correctLanguage = firstLangCode + LANGUAGE_DIVIDER + secondLangCode;
         view.getTranslationResponse(newWord, correctLanguage);
     }
 
     void setTranslation(String translation) {
-        TranslatorView view = getView();
         view.setTranslation(translation);
     }
 
@@ -93,7 +84,6 @@ class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
     }
 
     void setLanguages(Language languages) {
-        TranslatorView view = getView();
         this.languages = languages.getLanguages();
         Collection<String> languagesArray = languages.getLanguages().values();
         List<String> list = new ArrayList<>(languagesArray);
