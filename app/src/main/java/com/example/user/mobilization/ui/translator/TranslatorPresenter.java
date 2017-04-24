@@ -23,6 +23,8 @@ import static com.example.user.mobilization.utils.Constants.NULL_STRING;
 class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
 
     private TranslatorView view;
+    //Не уверен, правильно ли создавлять экземляр интерактора или же надо было его пробрасывать в конструктор.
+    //Хотел бы получить фидбэк по этому вопосу, если возмонжно
     private TranslationInteractor translationInteractor = new TranslationInteractor();
     private String lastWord;
     private String newWord;
@@ -62,6 +64,7 @@ class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
     }
 
     void onTextChanged(CharSequence s) {
+        //Записываем введенное слово в переменную, для последующего запроса
         newWord = s.toString();
         view.createRequest(EXTRA_TRANSLATION_API);
     }
@@ -71,6 +74,7 @@ class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
     }
 
     void getTranslationResponse() {
+        //Коды языков, полученные из spinner'ов
         String correctLanguage = firstLangCode + LANGUAGE_DIVIDER + secondLangCode;
         view.getTranslationResponse(newWord, correctLanguage);
     }
@@ -84,6 +88,7 @@ class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
     }
 
     void setLanguages(Language languages) {
+        //Достаем из Map только название языка, без его кода и преобразуем в новый массив, для отображения в Spinner
         this.languages = languages.getLanguages();
         Collection<String> languagesArray = languages.getLanguages().values();
         List<String> list = new ArrayList<>(languagesArray);
@@ -100,6 +105,7 @@ class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
         view.changeLanguages();
     }
 
+    //Запоминаем текущие языки spinner'ов
     void updateFirstSpinnerPosition(String language) {
         firstLangCode = findLanguageCode(language);
     }
@@ -108,6 +114,7 @@ class TranslatorPresenter extends MvpBasePresenter<TranslatorView> {
         secondLangCode = findLanguageCode(language);
     }
 
+    //Через forEach ищем код языка по его названию
     String findLanguageCode(String language) {
         String code = NULL_STRING;
         for (String key : languages.keySet()) {

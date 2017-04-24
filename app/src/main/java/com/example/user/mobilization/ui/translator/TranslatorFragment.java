@@ -121,6 +121,7 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //Таймер сбрасывается во время набора текста
                 if (timer != null)
                     timer.cancel();
                 yandexView.setVisibility(View.GONE);
@@ -130,6 +131,9 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
 
             @Override
             public void afterTextChanged(Editable s) {
+                //После завершения набора текста создается таймер, чтобы расчитать закончил ли юзер ввод
+                //или еще нет. В textView с переводом мы выводим ответ в любом случае, а пишем его в БД только
+                //если пользователь закончил ввод
                 presenter.onTextChanged(s);
                 timer = new Timer();
                 if (s.length() > 0) {
@@ -197,6 +201,7 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
 
     @Override
     public void createRequest(String requestType) {
+        //В зависимости от переданной строки(типа запроса) выполняем запрос либо на получение языков, либо на перевод
         Intent intent = new Intent(getActivity(), TranslationService.class);
         if (requestType.equals(EXTRA_LANGUAGE_API)) {
             intent.putExtra(BUNDLE, new Messenger(new MyLanguagesHandler()));
@@ -213,6 +218,7 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
 
             @Override
             public void onResponse(Call<Language> call, Response<Language> response) {
+                //TODO: Write request response to DB
                 presenter.setLanguages(response.body());
             }
 
@@ -248,6 +254,7 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
         });
     }
 
+    //Handler'ы, которые отслеживают статус выполнения запроса
     private class MyTranslationHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
@@ -287,7 +294,6 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
@@ -299,13 +305,13 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
     }
 
     @Override
     public void changeLanguages() {
+        //Используем третью переменную для замены(не придумал ничего лучше :()
         String helpStringArg;
         int helpIntArg;
         helpIntArg = firstLanguageSpinner.getSelectedItemPosition();
@@ -317,6 +323,7 @@ public class TranslatorFragment extends MvpFragment<TranslatorView, TranslatorPr
     }
 
     void haveResponse() {
+        //При получении ответа скрываем ProgressBar и показываем перевод
         progressBar.setVisibility(View.GONE);
         translationLayout.setVisibility(View.VISIBLE);
         yandexView.setVisibility(View.VISIBLE);
