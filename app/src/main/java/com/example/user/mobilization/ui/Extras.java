@@ -12,4 +12,9 @@ public final class Extras {
     public static final String API_YANDEX_TRANSLATOR_BASE_URL = "https://translate.yandex.net/";
     public static final String NULL_STRING = "";
     public static final int TRANSLATOR_TIMER_DELAY = 1000;
+    public static final String RUSSIAN_LANGUAGE_CODE = "ru";
+    public static final String EXTRA_LANGUAGE_API = "language";
+    public static final String EXTRA_TRANSLATION_API = "translation";
+    public static final String ENGLISH_LANGUAGE = "Английский";
+    public static final String RUSSIAN_LANGUAGE = "Русский";
 }

@@ -10,27 +10,15 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.support.annotation.RequiresApi;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.example.user.mobilization.model.Translation;
 import com.example.user.mobilization.network.RestApi;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.example.user.mobilization.ui.Extras.API_YANDEX_TRANSLATOR_BASE_URL;
-import static com.example.user.mobilization.ui.Extras.API_YANDEX_TRANSLATOR_KEY;
 import static com.example.user.mobilization.ui.Extras.BUNDLE;
 
 public class TranslationService extends Service {
@@ -55,18 +43,6 @@ public class TranslationService extends Service {
             restApi = retrofit.create(RestApi.class);
             Message message = Message.obtain();
             message.obj = true;
-//            getRestApi().getTranslation(API_YANDEX_TRANSLATOR_KEY, "Hello", "ru").enqueue(new Callback<Translation>() {
-//                @Override
-//                public void onResponse(Call<Translation> call, retrofit2.Response<Translation> response) {
-//                    message.obj = true;
-//                }
-//
-//                @Override
-//                public void onFailure(Call<Translation> call, Throwable t) {
-//                    message.obj = false;
-//                }
-//
-//            });
             try {
                 assert messenger != null;
                 messenger.send(message);
